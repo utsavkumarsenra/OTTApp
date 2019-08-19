@@ -9,8 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,23 +17,17 @@ class MainActivity : AppCompatActivity() {
     private lateinit var username: EditText
     private lateinit var search: Button
 
-    private lateinit var retrofit: Retrofit
-    private lateinit var api: Api
+    @Inject
+    lateinit var api: Api
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        component.inject(this)
 
         fullName = findViewById(R.id.full_name)
         username = findViewById(R.id.username)
         search = findViewById(R.id.search)
-
-        retrofit = Retrofit.Builder()
-            .baseUrl("https://api.github.com/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        api = retrofit.create(Api::class.java)
     }
 
     override fun onStart() {
