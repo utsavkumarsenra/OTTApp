@@ -16,17 +16,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var search: Button
 
     @Inject
-    lateinit var api: Api
+    lateinit var factory: MainViewModelFactory
 
     private lateinit var viewModel: MainViewModel
-    private lateinit var factory: MainViewModelFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         component.inject(this)
 
-        factory = MainViewModelFactory(api)
         viewModel = ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
 
         fullName = findViewById(R.id.full_name)
