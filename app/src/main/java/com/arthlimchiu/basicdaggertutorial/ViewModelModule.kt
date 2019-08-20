@@ -7,7 +7,7 @@ import dagger.Provides
 class ViewModelModule {
 
     @Provides
-    fun providesMainViewModelFactory(api: Api): MainViewModelFactory {
-        return MainViewModelFactory(api)
+    fun providesMainViewModelFactory(userRepository: UserRepository): MainViewModelFactory {
+        return MainViewModelFactory(userRepository)
     }
 }
