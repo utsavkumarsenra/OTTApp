@@ -15,17 +15,13 @@ class MainViewModel(private val api: Api) : ViewModel() {
     val fullName: LiveData<String>
         get() = _fullName
 
-    fun searchUser(user: String) {
-        api.getUser(user).enqueue(object : Callback<User> {
-            override fun onResponse(call: Call<User>, response: Response<User>) {
-                response.body()?.let { user ->
-                    _fullName.value = user.name
-                }
-            }
+    private var userRepository: UserRepository = UserRepositoryImpl(api)
 
-            override fun onFailure(call: Call<User>, t: Throwable) {
-                Log.e("MainActivity", "onFailure: ", t)
-            }
-        })
+    fun searchUser(username: String) {
+        userRepository.getUser(
+            username,
+            { user -> _fullName.value = user.name },
+            { t -> Log.e("MainActivity", "onFailure: ", t) }
+        )
     }
 }
