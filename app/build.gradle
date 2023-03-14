@@ -50,6 +50,9 @@ dependencies {
     // https://github.com/google/gson
     implementation 'com.google.code.gson:gson:2.8.5'
 
+    implementation 'org.glassfish:javax.annotation:10.0-b28'
+    compileOnly 'com.github.pengrad:jdk9-deps:1.0'
+
     // Testing
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
