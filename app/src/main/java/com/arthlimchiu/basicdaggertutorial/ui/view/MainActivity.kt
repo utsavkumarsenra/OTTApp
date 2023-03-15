@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity() {
     fun setgridadapter()
     {
 
-
+        gridadapter = MyPagingAdaper()
         grid.adapter = gridadapter
         gridadapter.setContext(this@MainActivity)
         grid.onFinishLoading(true, viewModel.getList(1))
