@@ -1,10 +1,14 @@
-package com.arthlimchiu.basicdaggertutorial
+package com.arthlimchiu.basicdaggertutorial.ui.view
 
 
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
+import com.arthlimchiu.basicdaggertutorial.MyPagingAdaper
+import com.arthlimchiu.basicdaggertutorial.R
+import com.arthlimchiu.basicdaggertutorial.util.apijson
+import com.arthlimchiu.basicdaggertutorial.component
 import com.arthlimchiu.basicdaggertutorial.models.Movie
 import com.paging.gridview.FooterViewGridAdapter
 import com.paging.gridview.PagingGridView
@@ -19,7 +23,7 @@ class MainActivity : AppCompatActivity() {
 //    private lateinit var username: EditText
 //    private lateinit var search: Button
 
-    private lateinit var grid:com.paging.gridview.PagingGridView
+    private lateinit var grid:PagingGridView
 
     @Inject
     lateinit var factory: MainViewModelFactory
@@ -30,7 +34,7 @@ class MainActivity : AppCompatActivity() {
 
     private var currentpage=1;
 
-    lateinit var gridadapter:MyPagingAdaper
+    lateinit var gridadapter: MyPagingAdaper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,9 +64,9 @@ class MainActivity : AppCompatActivity() {
             if (pager < 3 && currentpage<=3) {
                 currentpage++
                 grid.onFinishLoading(true, if (currentpage==2)
-                    getSecondList()
+                    viewModel.getList(2)
                 else
-                    getThirdList());
+                    viewModel.getList(3))
             } else {
                 grid.onFinishLoading(false, null)
             }
@@ -85,20 +89,11 @@ class MainActivity : AppCompatActivity() {
 
     fun setgridadapter()
     {
-        val movieList = ArrayList<Movie>()
-        val apijson = apijson()
-        val json1 = JSONObject(apijson.json1)
-        val jsonArray = json1.getJSONObject("page").getJSONObject("content-items").getJSONArray("content")
-        for (i in 0..jsonArray.length()-1)
-        {
-            val thisobject = jsonArray.get(i) as JSONObject
-            movieList.add(Movie(thisobject.getString("name"),thisobject.getString("poster-image")))
-        }
-        gridadapter = MyPagingAdaper()
+
 
         grid.adapter = gridadapter
         gridadapter.setContext(this@MainActivity)
-        grid.onFinishLoading(true, movieList);
+        grid.onFinishLoading(true, viewModel.getList(1))
     }
 
     fun getSecondList():ArrayList<Movie>

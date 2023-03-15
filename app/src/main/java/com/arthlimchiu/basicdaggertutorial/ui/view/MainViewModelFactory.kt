@@ -1,7 +1,8 @@
-package com.arthlimchiu.basicdaggertutorial
+package com.arthlimchiu.basicdaggertutorial.ui.view
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.arthlimchiu.basicdaggertutorial.repository.UserRepository
 import javax.inject.Inject
 
 @Suppress("UNCHECKED_CAST")
