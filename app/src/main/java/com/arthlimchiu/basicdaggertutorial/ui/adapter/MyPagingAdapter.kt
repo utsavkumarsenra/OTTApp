@@ -67,6 +67,7 @@ class MyPagingAdaper : PagingBaseAdapter<Movie>() {
             // on below line we are setting image for our course image view
             movieImage.setImageResource(id)
         } catch (e: Exception) {
+            movieImage.setImageResource(R.drawable.placeholder_for_missing_posters)
             e.printStackTrace()
         }
 

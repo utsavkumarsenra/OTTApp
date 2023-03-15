@@ -1,15 +1,18 @@
 package com.arthlimchiu.basicdaggertutorial.ui.view
 
 
+
 import android.os.Bundle
+import android.text.TextUtils
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
+import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.arthlimchiu.basicdaggertutorial.MyPagingAdaper
 import com.arthlimchiu.basicdaggertutorial.R
-import com.arthlimchiu.basicdaggertutorial.util.apijson
 import com.arthlimchiu.basicdaggertutorial.component
-import com.arthlimchiu.basicdaggertutorial.models.Movie
 import com.paging.gridview.FooterViewGridAdapter
 import com.paging.gridview.PagingGridView
 import com.paging.gridview.PagingGridView.Pagingable
@@ -36,6 +39,8 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var gridadapter: MyPagingAdaper
 
+    private var isSearch = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -61,7 +66,7 @@ class MainActivity : AppCompatActivity() {
 
         grid.setHasMoreItems(true)
         grid.setPagingableListener(Pagingable {
-            if (pager < 3 && currentpage<=3) {
+            if (pager < 3 && currentpage<=3 && !isSearch) {
                 currentpage++
                 grid.onFinishLoading(true, if (currentpage==2)
                     viewModel.getList(2)
@@ -94,37 +99,13 @@ class MainActivity : AppCompatActivity() {
         grid.adapter = gridadapter
         gridadapter.setContext(this@MainActivity)
         grid.onFinishLoading(true, viewModel.getList(1))
+
+
     }
 
-    fun getSecondList():ArrayList<Movie>
-    {
-        val movieList = ArrayList<Movie>()
-        val apijson = apijson()
-        val json2 = JSONObject(apijson.json2)
-        val jsonArray = json2.getJSONObject("page").getJSONObject("content-items").getJSONArray("content")
-        for (i in 0..jsonArray.length()-1)
-        {
-            val thisobject = jsonArray.get(i) as JSONObject
-            movieList.add(Movie(thisobject.getString("name"),thisobject.getString("poster-image")))
-        }
 
-        return movieList
-    }
 
-    fun getThirdList():ArrayList<Movie>
-    {
-        val movieList = ArrayList<Movie>()
-        val apijson = apijson()
-        val json3= JSONObject(apijson.json3)
-        val jsonArray = json3.getJSONObject("page").getJSONObject("content-items").getJSONArray("content")
-        for (i in 0..jsonArray.length()-1)
-        {
-            val thisobject = jsonArray.get(i) as JSONObject
-            movieList.add(Movie(thisobject.getString("name"),thisobject.getString("poster-image")))
-        }
 
-        return movieList
-    }
 
     private fun clearData() {
         if (grid.getAdapter() != null) {
@@ -135,7 +116,63 @@ class MainActivity : AppCompatActivity() {
 
             grid = findViewById<View>(R.id.moviesGrid) as PagingGridView
             gridadapter = MyPagingAdaper()
+
+
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.main, menu)
+        val myActionMenuItem: MenuItem? = menu?.findItem(R.id.searchUSer)
+        val searchView: SearchView = myActionMenuItem?.actionView as SearchView
+        searchView.setQueryHint("Search Movies");
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (TextUtils.isEmpty(newText)) {
+                    isSearch = false
+//                    adapter.filter("")
+//                    listView.clearTextFilter()
+                    clearData()
+                    grid.onFinishLoading(true, viewModel.currentlist)
+
+
+
+                } else if (newText?.length!! >2)  {
+                    isSearch = true
+                    clearData()
+                    val newlist = viewModel.getsearchlist(newText)
+                    clearData()
+                    grid.onFinishLoading(true, newlist)
+//                    adapter.filter(newText)
+                }
+                return true
+            }
+        })
+
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        val id: Int = item.getItemId()
+        if (id == com.arthlimchiu.basicdaggertutorial.R.id.searchUSer) {
+
+            // Do something
+            return true
+        }
+        //        if (id == R.id.action_send) {
+//
+//            // Do something
+//            return true;
+//        }
+        return super.onOptionsItemSelected(item)
     }
 
 

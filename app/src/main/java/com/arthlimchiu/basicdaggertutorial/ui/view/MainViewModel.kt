@@ -9,9 +9,16 @@ import com.arthlimchiu.basicdaggertutorial.repository.UserRepository
 
 class MainViewModel(private val userRepository: UserRepository) : ViewModel() {
 
-
+    val currentlist:ArrayList<Movie> = arrayListOf()
 
     fun getList(position:Int) : ArrayList<Movie> {
-        return userRepository.getList(position)
+        val resultlist  = userRepository.getList(position)
+        currentlist.addAll(resultlist)
+        return resultlist
+    }
+
+    fun getsearchlist(text:String) : ArrayList<Movie>
+    {
+        return ArrayList(currentlist.filter { it.name.contains(text, ignoreCase = true)})
     }
 }
