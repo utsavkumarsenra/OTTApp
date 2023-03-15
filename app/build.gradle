@@ -51,6 +51,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
 
     implementation 'org.glassfish:javax.annotation:10.0-b28'
+    implementation 'com.github.nicolasjafelle:paginggridview:1.0'
     compileOnly 'com.github.pengrad:jdk9-deps:1.0'
 
     // Testing

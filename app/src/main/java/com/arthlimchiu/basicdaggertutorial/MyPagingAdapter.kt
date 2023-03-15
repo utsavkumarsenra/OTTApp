@@ -1,47 +1,40 @@
 package com.arthlimchiu.basicdaggertutorial
 
-
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.arthlimchiu.basicdaggertutorial.models.Movie
+import com.paging.gridview.PagingBaseAdapter
 
 
-// on below line we are creating an
-// adapter class for our grid view.
-class GridAdapter(
-    // on below line we are creating two
-    // variables for course list and context
-    private val movieList: List<Movie>,
-    private val context: Context
-) :
-    BaseAdapter() {
-    // in base adapter class we are creating variables
-    // for layout inflater, course image view and course text view.
-    private var layoutInflater: LayoutInflater? = null
+class MyPagingAdaper : PagingBaseAdapter<Movie>() {
     private lateinit var name: TextView
     private lateinit var movieImage: ImageView
+    private lateinit var context:Context
+    private var layoutInflater: LayoutInflater? = null
 
-    // below method is use to return the count of course list
-    override fun getCount(): Int {
-        return movieList.size
+    fun setContext(contextin : Context)
+    {
+        context = contextin
     }
 
-    // below function is use to return the item of grid view.
-    override fun getItem(position: Int): Any? {
+    override fun getCount(): Int {
+        return items.size
+    }
+
+
+
+    override fun getItem(position: Int): Movie? {
         return null
     }
 
-    // below function is use to return item id of grid view.
     override fun getItemId(position: Int): Long {
-        return 0
+        return position.toLong()
     }
 
-    // in below function we are getting individual item of grid view.
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
         var convertView = convertView
         // on blow line we are checking if layout inflater
@@ -62,8 +55,8 @@ class GridAdapter(
         name = convertView!!.findViewById(R.id.movieName)
         movieImage = convertView!!.findViewById(R.id.movieImage)
         // on below line we are setting text in our course text view.
-        name.setText(movieList.get(position).name)
-        val postername:String = movieList.get(position).posterimage.substring(0,movieList.get(position).posterimage.indexOf('.'))
+        name.setText(items.get(position).name)
+        val postername:String = items.get(position).posterimage.substring(0,items.get(position).posterimage.indexOf('.'))
 
 
         val id: Int =
@@ -76,11 +69,8 @@ class GridAdapter(
         } catch (e: Exception) {
             e.printStackTrace()
         }
+
+
         return convertView
-
-
-
-
-
     }
 }

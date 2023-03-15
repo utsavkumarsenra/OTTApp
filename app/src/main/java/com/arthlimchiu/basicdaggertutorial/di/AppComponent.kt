@@ -1,5 +1,6 @@
-package com.arthlimchiu.basicdaggertutorial
+package com.arthlimchiu.basicdaggertutorial.di
 
+import com.arthlimchiu.basicdaggertutorial.MainActivity
 import dagger.Component
 import javax.inject.Singleton
 

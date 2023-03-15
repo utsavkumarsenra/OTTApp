@@ -1,5 +1,6 @@
-package com.arthlimchiu.basicdaggertutorial
+package com.arthlimchiu.basicdaggertutorial.di
 
+import com.arthlimchiu.basicdaggertutorial.Api
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
