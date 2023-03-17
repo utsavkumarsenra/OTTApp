@@ -1,3 +1,3 @@
 # OTTSample
 
-This is a sample ui for OTT apps.
+This is a sample ui for OTT app.
