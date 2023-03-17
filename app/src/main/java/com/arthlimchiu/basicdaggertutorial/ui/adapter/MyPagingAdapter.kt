@@ -7,8 +7,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.arthlimchiu.basicdaggertutorial.models.Movie
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.paging.gridview.PagingBaseAdapter
 
+//adapter which manages pagination and showing data in gridview
 
 class MyPagingAdaper : PagingBaseAdapter<Movie>() {
     private lateinit var name: TextView
@@ -58,20 +61,20 @@ class MyPagingAdaper : PagingBaseAdapter<Movie>() {
         name.setText(items.get(position).name)
         val postername:String = items.get(position).posterimage.substring(0,items.get(position).posterimage.indexOf('.'))
 
+        val requestOptions = RequestOptions().error(R.drawable.placeholder_for_missing_posters)
 
-        val id: Int =
-            context.getResources().getIdentifier("com.arthlimchiu.basicdaggertutorial:drawable/"+postername, null, null)
+        Glide.with(context)
+            .load(getImage(postername))
+            .fitCenter()
+            .apply(requestOptions)
+            .into(movieImage)
 
-        try {
-
-            // on below line we are setting image for our course image view
-            movieImage.setImageResource(id)
-        } catch (e: Exception) {
-            movieImage.setImageResource(R.drawable.placeholder_for_missing_posters)
-            e.printStackTrace()
-        }
 
 
         return convertView
+    }
+
+    fun getImage(imageName: String?): Int {
+        return context.getResources().getIdentifier(imageName, "drawable", context.getPackageName())
     }
 }

@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">Basic Dagger Tutorial</string>
+    <string name="app_name">ShowTime</string>
+    <string name="movietype">"Romantic comedy"</string>
 </resources>

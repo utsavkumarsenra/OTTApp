@@ -1,6 +1,5 @@
 package com.arthlimchiu.basicdaggertutorial.repository
 
-import com.arthlimchiu.basicdaggertutorial.User
 import com.arthlimchiu.basicdaggertutorial.models.Movie
 
 

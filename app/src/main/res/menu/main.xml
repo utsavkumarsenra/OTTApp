@@ -6,8 +6,10 @@
     <item
         android:id="@+id/searchUSer"
         android:title="Search"
+
         app:iconTint="@android:color/white"
         android:icon="@drawable/search"
         app:showAsAction="always"
+
         app:actionViewClass="android.widget.SearchView" />
 </menu>

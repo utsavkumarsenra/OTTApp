@@ -9,6 +9,8 @@ import com.arthlimchiu.basicdaggertutorial.repository.UserRepository
 
 class MainViewModel(private val userRepository: UserRepository) : ViewModel() {
 
+    //saves data during orientation change,has both current data and searched data
+
     val currentlist:ArrayList<Movie> = arrayListOf()
 
     fun getList(position:Int) : ArrayList<Movie> {

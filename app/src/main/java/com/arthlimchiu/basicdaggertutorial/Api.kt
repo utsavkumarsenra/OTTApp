@@ -1,5 +1,6 @@
 package com.arthlimchiu.basicdaggertutorial
 
+import com.arthlimchiu.basicdaggertutorial.models.Movie
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -7,6 +8,6 @@ import retrofit2.http.Path
 
 interface Api {
 
-    @GET("users/{user}")
-    fun getUser(@Path("user") user: String): Call<User>
+    @GET("movie/{movie}")
+    fun getUser(@Path("movie") user: String): Call<Movie>
 }

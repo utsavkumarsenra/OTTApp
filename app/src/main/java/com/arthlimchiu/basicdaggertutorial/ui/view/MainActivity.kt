@@ -2,12 +2,16 @@ package com.arthlimchiu.basicdaggertutorial.ui.view
 
 
 
+
 import android.os.Bundle
+import android.text.InputFilter
+import android.text.InputFilter.LengthFilter
 import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.SearchView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.arthlimchiu.basicdaggertutorial.MyPagingAdaper
@@ -16,15 +20,12 @@ import com.arthlimchiu.basicdaggertutorial.component
 import com.paging.gridview.FooterViewGridAdapter
 import com.paging.gridview.PagingGridView
 import com.paging.gridview.PagingGridView.Pagingable
-import org.json.JSONObject
 import javax.inject.Inject
 
 
 class MainActivity : AppCompatActivity() {
 
-//    private lateinit var fullName: TextView
-//    private lateinit var username: EditText
-//    private lateinit var search: Button
+
 
     private lateinit var grid:PagingGridView
 
@@ -48,25 +49,14 @@ class MainActivity : AppCompatActivity() {
 
         viewModel = ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
         grid = findViewById(R.id.moviesGrid)
-//
-//        fullName = findViewById(R.id.full_name)
-//        username = findViewById(R.id.username)
-//        search = findViewById(R.id.search)
-//
-//        viewModel.fullName.observe(this, Observer { name ->
-//            fullName.text = name
-//        })
 
-        // on below line we are initializing our course adapter
-        // and passing course list and context.
-
-
-        // on below line we are setting adapter to our grid view.
 
 
         grid.setHasMoreItems(true)
+
+        //setting pagination listener for pagination
         grid.setPagingableListener(Pagingable {
-            if (pager < 3 && currentpage<=3 && !isSearch) {
+            if (pager < 3 && currentpage<3 && !isSearch) {
                 currentpage++
                 grid.onFinishLoading(true, if (currentpage==2)
                     viewModel.getList(2)
@@ -100,6 +90,16 @@ class MainActivity : AppCompatActivity() {
         gridadapter.setContext(this@MainActivity)
         grid.onFinishLoading(true, viewModel.getList(1))
 
+        supportActionBar?.title = resources.getString(R.string.movietype)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+
+        val d = resources.getDrawable(R.drawable.nav_bar)
+        supportActionBar?.setBackgroundDrawable(d)
+
+
+
+
 
     }
 
@@ -126,13 +126,16 @@ class MainActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.main, menu)
         val myActionMenuItem: MenuItem? = menu?.findItem(R.id.searchUSer)
         val searchView: SearchView = myActionMenuItem?.actionView as SearchView
+
         searchView.setQueryHint("Search Movies");
+
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
+
                 if (TextUtils.isEmpty(newText)) {
                     isSearch = false
 //                    adapter.filter("")
@@ -150,6 +153,10 @@ class MainActivity : AppCompatActivity() {
                     grid.onFinishLoading(true, newlist)
 //                    adapter.filter(newText)
                 }
+
+
+
+
                 return true
             }
         })
@@ -162,16 +169,18 @@ class MainActivity : AppCompatActivity() {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         val id: Int = item.getItemId()
-        if (id == com.arthlimchiu.basicdaggertutorial.R.id.searchUSer) {
+        if (id ==R.id.searchUSer) {
 
             // Do something
             return true
         }
-        //        if (id == R.id.action_send) {
-//
-//            // Do something
-//            return true;
-//        }
+
+        else if (id ==android.R.id.home) {
+            finish()
+            // Do something
+            return true
+        }
+
         return super.onOptionsItemSelected(item)
     }
 
